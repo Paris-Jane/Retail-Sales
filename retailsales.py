@@ -1,5 +1,5 @@
 # LIBRARIES
-import sqlalchemy
+from sqlalchemy import create_engine, text
 import pandas as pd
 import matplotlib.pyplot as plot
 # optional, but you could use them:
