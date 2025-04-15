@@ -1,11 +1,11 @@
 # LIBRARIES
-# import sqlalchemy
+import sqlalchemy
 import pandas as pd
-# import matplotlib.pyplot as plot
+import matplotlib.pyplot as plot
 # optional, but you could use them:
 #   import openpyxl
 #   from sqlalchemy.sql import text
-#   import psycopg2
+import psycopg2
 
 
 df = pd.read_excel('Retail_Sales_Data.xlsx')
