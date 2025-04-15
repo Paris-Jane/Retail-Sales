@@ -45,7 +45,20 @@ if choice == 1 :
     df["category"] = df["product"].map(productCategoriesDict)
 
     # INSERT STEP 4: Save the results as a table called ‘sale’ in your is303 postgres database.
-
+    username = 'postgres'
+    password = input("What is your postgres password? ")
+    host = 'localhost'
+    port = '5432' # CHECK YOUR OWN PORT
+    database = 'is303'
+    # You had to manually create the is303 database
+    # Create the connection string to speak with the is303 database
+    engine = create_engine(f'postgresql+psycopg2://{username}:{password}@{host}:{port}/{database}')
+    # Establish the connection to the database and store to variable
+    conn = engine.connect()
+    # Overwrite the dataframe data to a table called sales
+    # Use the current database connection in conn
+    # index=False says to NOT bring in the dataframe row number
+    df.to_sql('sale', conn, if_exists='replace', index=False)
     print("You've imported the excel file into your postgres database.")
 
 # PART 2
