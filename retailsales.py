@@ -64,8 +64,17 @@ if choice == 1 :
 # PART 2
 elif choice == 2 : 
     # Step 1: Print out: “The following are all the categories that have been sold:” 
-        print("The following are all the categories that have been sold:")
+    print("The following are all the categories that have been sold:")
     # Step 2: Print out each of the categories stored in your database from the ‘sale’ table with a number preceding it. You can’t just hardcode the categories in, your program must read them from the database. It should look like this:
+    
+    query = "SELECT DISTINCT catergoy FROM sale ORDER BY category;"
+    
+    categories_df = pd.read_sql( text(query), conn)
+
+    for iCount, category in enumerate(categories_df['category'], start=1):
+        # Display the counter and the value for the category
+        print(f"{iCount}: {category}")
+        
         # 1: Technology
         # 2: Apparel
         # 3: Accessories
