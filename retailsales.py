@@ -108,11 +108,21 @@ while True:
         # and then calculating the sum of total prices for each of those products
 
         # creating the chart
-        df.plot(kind='bar')  # creates the chart
-        plot.title(f"Total Sales in {df}")  # adds title to the top of the chart
+        plot.figure(figsize=(10, 6))
+
+        plot.bar(df['product'], df['total_sales']) # x is first and then y by default
+        plot.title(f"Total Sales in {category_name}")  # adds title to the top of the chart
         plot.xlabel("Product")  # label for the x-axis
         plot.ylabel("Total Sales")  # label for the y-axis
-        plot.show()  # makes the chart pop up on the screen
+        # How to display the labels on the x axis
+        # A tick is a mark or label on the x axis
+        # Change this and run again to see the difference
+        plot.xticks(rotation=45)
+        # Helps ensure everything fits nicely within the figure boundaries
+        # Comment this line and run again to see the difference
+        plot.tight_layout()
+        # Display the chart
+        plot.show()
 
 
     else : 
