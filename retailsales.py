@@ -26,10 +26,10 @@ conn = engine.connect()
 df.to_sql('sale', conn, if_exists='replace', index=False)
 
 while True:
-    choice = int(input("If you want to import data, enter 1. If you want to see summaries of stored data, enter 2. Enter any other value to exit the program: "))
+    choice = input("If you want to import data, enter 1. If you want to see summaries of stored data, enter 2. Enter any other value to exit the program: ")
 
     # PART 1
-    if choice == 1 : 
+    if choice == '1' : 
         # Fix Name column
         split_names  = df["name"].str.split("_", expand = True)
         df.insert(1,"first_name",split_names[0])
@@ -65,7 +65,7 @@ while True:
         print("You've imported the excel file into your postgres database.")
 
     # PART 2
-    elif choice == 2 : 
+    elif choice == '2' : 
         # Step 1: Print out: “The following are all the categories that have been sold:” 
         print("The following are all the categories that have been sold:")
         # Step 2: Print out each of the categories stored in your database from the ‘sale’ table with a number preceding it. You can’t just hardcode the categories in, your program must read them from the database. It should look like this:
@@ -89,14 +89,16 @@ while True:
         category_choice = int(input("Please enter the number of the category you want to see summarized: "))
         category_name = lst_categories[category_choice - 1]
         query = """
-            SELECT product, SUM(total_price) AS total_sales, AVG(total_price) AS average_sales, SUM(quantity_sold)
+            SELECT product, SUM(total_price) AS total_sales, AVG(total_price) AS average_sales, SUM(quantity_sold) AS quantity_sold
             FROM sale
             WHERE category = :category
             GROUP BY product"""
 
         df = pd.read_sql( text(query), conn, params={"category": category_name})
-        print(df)
-        print(f"Sum of total sales {df['total_sales'].sum()}")
+        print(f"Sum of total sales: {round(df['total_sales'].sum(),2)}")
+        print(f"Average sale amount: {round(df['average_sales'].mean(),2)}")
+        print(f"Total units sold: {round(df['quantity_sold'].sum(),0)}")
+
             # Step 4: Then, for the entered category, calculate and display the sum of total sales, the average sale amount, and the total units sold.
             # Step 5: Then, display a bar chart with the x axis as the products in that category and the y axis as the sum of the total sales of that product.
                 # a.	The title of the chart should be “Total Sales by Product in Category (but put the actual category name)
