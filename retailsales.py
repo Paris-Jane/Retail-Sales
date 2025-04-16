@@ -71,9 +71,11 @@ elif choice == 2 :
     
     categories_df = pd.read_sql( text(query), conn)
 
+    lst_categories = []
     for iCount, category in enumerate(categories_df['category'], start=1):
         # Display the counter and the value for the category
         print(f"{iCount}: {category}")
+        lst_categories.append(category)
         
         # 1: Technology
         # 2: Apparel
@@ -82,10 +84,18 @@ elif choice == 2 :
         # 5: Stationery
     # Step 3: Print out: “Please enter the number of the category you want to see summarized: “
         category_choice = int(input("Please enter the number of the category you want to see summarized: "))
-    # Step 4: Then, for the entered category, calculate and display the sum of total sales, the average sale amount, and the total units sold.
-    # Step 5: Then, display a bar chart with the x axis as the products in that category and the y axis as the sum of the total sales of that product.
-        # a.	The title of the chart should be “Total Sales by Product in Category (but put the actual category name)
-        # b.	The x label should be “Product”, the y label should be “Total Sales”
+        category_name = lst_categories[category_choice - 1]
+    query = """
+        SELECT product, SUM(total_price) AS total_sales, AVG(total_price) AS average_sales, quantity_sold
+        FROM sale
+        WHERE category = :category
+        GROUP BY product"""
+
+    df = pd.read_sql( text(query), conn, params={"category": category_name})
+        # Step 4: Then, for the entered category, calculate and display the sum of total sales, the average sale amount, and the total units sold.
+        # Step 5: Then, display a bar chart with the x axis as the products in that category and the y axis as the sum of the total sales of that product.
+            # a.	The title of the chart should be “Total Sales by Product in Category (but put the actual category name)
+            # b.	The x label should be “Product”, the y label should be “Total Sales”
 
 else : 
     print("Closing the program")
